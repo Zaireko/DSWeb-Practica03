@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Empleados</title>
+    </h:head>
+    <h:body>
+
+        <f:view>
+            <h:form id="mainForm">
+                <h2>Gestión de Empleados</h2>
+                
+                <p:growl id="mimsg" showDetail="true" />
+
+                <p:commandButton value="Agregar Empleado" oncomplete="PF('dlgAgregar').show()" icon="pi pi-plus" update="addForm" process="@this" />
+
+                <p:dataTable id="empleadosTable" value="#{empleado.empleados}" var="emp" style="margin-top:20px">
+                    <p:column headerText="ID">
+                        #{emp.id}
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        #{emp.nombre}
+                    </p:column>
+                    <p:column headerText="Dirección">
+                        #{emp.direccion}
+                    </p:column>
+                    <p:column headerText="Teléfono">
+                        #{emp.telefono}
+                    </p:column>
+                    <p:column headerText="Acciones">
+                        <p:commandButton value="Actualizar" oncomplete="PF('dlgActualizar').show()" actionListener="#{empleado.prepareUpdate(emp)}" update="updateForm" process="@this" />
+                        
+                        <p:commandButton value="Eliminar" actionListener="#{empleado.deleteEmpleado(emp.id)}" update="mimsg, empleadosTable" />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+            <p:dialog id="dialogAgregar" header="Agregar Empleado" widgetVar="dlgAgregar" modal="true" closable="true" draggable="false" resizable="false" showEffect="fade" hideEffect="fade">
+                <h:form id="addForm">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel for="addNombre" value="Nombre:" />
+                        <p:inputText id="addNombre" value="#{empleado.empleado.nombre}" />
+
+                        <p:outputLabel for="addDireccion" value="Dirección:" />
+                        <p:inputText id="addDireccion" value="#{empleado.empleado.direccion}" />
+
+                        <p:outputLabel for="addTelefono" value="Teléfono:" />
+                        <p:inputText id="addTelefono" value="#{empleado.empleado.telefono}" />
+                    </p:panelGrid>
+
+                    <p:commandButton id="btoAgregar" value="Agregar" actionListener="#{empleado.addEmpleado}" update=":mainForm:mimsg, :mainForm:empleadosTable" oncomplete="PF('dlgAgregar').hide()" process="@form" />
+                </h:form>
+            </p:dialog>
+
+            <p:dialog id="dialogActualizar" header="Actualizar Empleado" widgetVar="dlgActualizar" modal="true" closable="true" draggable="false" resizable="false" showEffect="fade" hideEffect="fade">
+                <h:form id="updateForm">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel for="updateNombre" value="Nombre:" />
+                        <p:inputText id="updateNombre" value="#{empleado.empleado.nombre}" />
+
+                        <p:outputLabel for="updateDireccion" value="Dirección:" />
+                        <p:inputText id="updateDireccion" value="#{empleado.empleado.direccion}" />
+
+                        <p:outputLabel for="updateTelefono" value="Teléfono:" />
+                        <p:inputText id="updateTelefono" value="#{empleado.empleado.telefono}" />
+                    </p:panelGrid>
+
+                    <p:commandButton id="btoActualizar" value="Guardar Cambios" actionListener="#{empleado.updateEmpleado}" update=":mainForm:mimsg, :mainForm:empleadosTable" oncomplete="PF('dlgActualizar').hide()" process="@form" />
+                </h:form>
+            </p:dialog>
+
+        </f:view>
+
+    </h:body>
+</html>
