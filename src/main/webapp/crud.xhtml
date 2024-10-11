@@ -16,21 +16,7 @@
                 
                 <p:growl id="mimsg" showDetail="true" />
 
-                <p:panel header="Empleado">
-                    <p:outputLabel for="nombre" value="Nombre:" />
-                    <p:inputText id="nombre" value="#{empleado.empleado.nombre}" />
-                    <br/>
-
-                    <p:outputLabel for="direccion" value="Dirección:" />
-                    <p:inputText id="direccion" value="#{empleado.empleado.direccion}" />
-                    <br/>
-
-                    <p:outputLabel for="telefono" value="Teléfono:" />
-                    <p:inputText id="telefono" value="#{empleado.empleado.telefono}" />
-                    <br/>
-
-                    <p:commandButton id="btoGuardar" value="Guardar" actionListener="#{empleado.addEmpleado}" update="mimsg, empleadosTable" />
-                </p:panel>
+                <p:commandButton value="Agregar Empleado" oncomplete="PF('dlgAgregar').show()" icon="pi pi-plus" update="addForm" process="@this" />
 
                 <p:dataTable id="empleadosTable" value="#{empleado.empleados}" var="emp" style="margin-top:20px">
                     <p:column headerText="ID">
@@ -53,6 +39,25 @@
                 </p:dataTable>
             </h:form>
 
+            <!-- Diálogo para agregar nuevo empleado -->
+            <p:dialog id="dialogAgregar" header="Agregar Empleado" widgetVar="dlgAgregar" modal="true" closable="true" draggable="false" resizable="false" showEffect="fade" hideEffect="fade">
+                <h:form id="addForm">
+                    <p:panelGrid columns="2">
+                        <p:outputLabel for="addNombre" value="Nombre:" />
+                        <p:inputText id="addNombre" value="#{empleado.empleado.nombre}" />
+
+                        <p:outputLabel for="addDireccion" value="Dirección:" />
+                        <p:inputText id="addDireccion" value="#{empleado.empleado.direccion}" />
+
+                        <p:outputLabel for="addTelefono" value="Teléfono:" />
+                        <p:inputText id="addTelefono" value="#{empleado.empleado.telefono}" />
+                    </p:panelGrid>
+
+                    <p:commandButton id="btoAgregar" value="Agregar" actionListener="#{empleado.addEmpleado}" update=":mainForm:mimsg, :mainForm:empleadosTable" oncomplete="PF('dlgAgregar').hide()" process="@form" />
+                </h:form>
+            </p:dialog>
+
+            <!-- Diálogo para actualizar empleado existente -->
             <p:dialog id="dialogActualizar" header="Actualizar Empleado" widgetVar="dlgActualizar" modal="true" closable="true" draggable="false" resizable="false" showEffect="fade" hideEffect="fade">
                 <h:form id="updateForm">
                     <p:panelGrid columns="2">
